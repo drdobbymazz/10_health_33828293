@@ -1,0 +1,66 @@
+<%- include('header') %>
+
+<div class="hero">
+    <h1>Welcome to FitTrack Pro</h1>
+    <p class="hero-subtitle">Your Personal Fitness Journey Starts Here</p>
+    <p class="hero-description">
+        Track your workouts, monitor your progress, and achieve your fitness goals with our comprehensive fitness tracking platform.
+    </p>
+    <% if (!user) { %>
+        <div class="hero-buttons">
+            <a href="/register" class="btn btn-primary btn-large">Get Started</a>
+            <a href="/login" class="btn btn-secondary btn-large">Login</a>
+        </div>
+    <% } else { %>
+        <div class="hero-buttons">
+            <a href="/dashboard" class="btn btn-primary btn-large">Go to Dashboard</a>
+            <a href="/add-workout" class="btn btn-secondary btn-large">Log a Workout</a>
+        </div>
+    <% } %>
+</div>
+
+<div class="features">
+    <h2>Why Choose FitTrack Pro?</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/trackprogress.png" alt="Track Progress"></div>
+            <h3>Track Progress</h3>
+            <p>Monitor your fitness journey with detailed workout logs and comprehensive statistics.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/setgoals.png" alt="Set Goals"></div>
+            <h3>Set Goals</h3>
+            <p>Define your fitness objectives and track your progress towards achieving them.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/searchworkouts.png" alt="Search Workouts"></div>
+            <h3>Search Workouts</h3>
+            <p>Easily find past workouts and review your training history with powerful search.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/exerciselibrary.png" alt="Exercise Library"></div>
+            <h3>Exercise Library</h3>
+            <p>Access a comprehensive library of exercises across multiple categories.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/analytics.png" alt="Analytics"></div>
+            <h3>Analytics</h3>
+            <p>View detailed statistics and insights about your training patterns.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><img src="/images/easytouse.png" alt="Easy to Use"></div>
+            <h3>Easy to Use</h3>
+            <p>Simple, intuitive interface designed for fitness enthusiasts of all levels.</p>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <h2>Ready to Transform Your Fitness?</h2>
+    <p>Join thousands of users tracking their way to better health</p>
+    <% if (!user) { %>
+        <a href="/register" class="btn btn-primary btn-large">Start Your Journey</a>
+    <% } %>
+</div>
+
+<%- include('footer') %>

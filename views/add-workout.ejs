@@ -1,0 +1,118 @@
+<%- include('header') %>
+
+<div class="content-section">
+    <h1>Log a New Workout</h1>
+    <p>Record your workout details and exercises</p>
+
+    <form action="/add-workout" method="POST" class="workout-form">
+        <div class="form-section">
+            <h2>Workout Information</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="workout_date">Workout Date *</label>
+                    <input type="date" id="workout_date" name="workout_date" required class="form-control" 
+                           value="<%= new Date().toISOString().split('T')[0] %>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration_minutes">Duration (minutes) *</label>
+                    <input type="number" id="duration_minutes" name="duration_minutes" required 
+                           class="form-control" min="1" placeholder="e.g., 45">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" name="notes" class="form-control" rows="3" 
+                          placeholder="How did the workout feel? Any observations..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Exercises</h2>
+            <p class="form-help">Add the exercises you performed in this workout</p>
+            
+            <div id="exercise-list">
+                <div class="exercise-entry">
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label>Exercise</label>
+                            <select name="exercises[]" class="form-control">
+                                <option value="">-- Select Exercise --</option>
+                                <% 
+                                const categories = [...new Set(exercises.map(e => e.category))];
+                                categories.forEach(category => { 
+                                %>
+                                    <optgroup label="<%= category %>">
+                                        <% exercises.filter(e => e.category === category).forEach(exercise => { %>
+                                            <option value="<%= exercise.id %>"><%= exercise.name %></option>
+                                        <% }); %>
+                                    </optgroup>
+                                <% }); %>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Sets</label>
+                            <input type="number" name="sets[]" class="form-control" min="0" placeholder="3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Reps</label>
+                            <input type="number" name="reps[]" class="form-control" min="0" placeholder="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" name="weight[]" class="form-control" min="0" step="0.5" placeholder="50">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Distance (km)</label>
+                            <input type="number" name="distance[]" class="form-control" min="0" step="0.1" placeholder="5.0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Calories</label>
+                            <input type="number" name="calories[]" class="form-control" min="0" placeholder="250">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-secondary" onclick="addExerciseRow()">+ Add Another Exercise</button>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Workout</button>
+            <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function addExerciseRow() {
+    const exerciseList = document.getElementById('exercise-list');
+    const firstEntry = exerciseList.querySelector('.exercise-entry');
+    const newEntry = firstEntry.cloneNode(true);
+    
+    // Clear all input values
+    newEntry.querySelectorAll('input').forEach(input => input.value = '');
+    newEntry.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+    
+    // Add remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-danger btn-small remove-exercise';
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = function() {
+        newEntry.remove();
+    };
+    newEntry.querySelector('.form-row').appendChild(removeBtn);
+    
+    exerciseList.appendChild(newEntry);
+}
+</script>
+
+<%- include('footer') %>

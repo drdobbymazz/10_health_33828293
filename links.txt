@@ -1,0 +1,9 @@
+home=https://www.doc.gold.ac.uk/usr/439/
+about=https://www.doc.gold.ac.uk/usr/439/about
+login=https://www.doc.gold.ac.uk/usr/439/login
+register=https://www.doc.gold.ac.uk/usr/439/register
+dashboard=https://www.doc.gold.ac.uk/usr/439/dashboard
+search=https://www.doc.gold.ac.uk/usr/439/search
+add-workout=https://www.doc.gold.ac.uk/usr/439/add-workout
+goals=https://www.doc.gold.ac.uk/usr/439/goals
+statistics=https://www.doc.gold.ac.uk/usr/439/statistics

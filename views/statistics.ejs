@@ -1,0 +1,124 @@
+<%- include('header') %>
+
+<div class="content-section">
+    <h1>Training Statistics</h1>
+    <p>Analyze your workout patterns and progress over time</p>
+
+    <div class="statistics-container">
+        <section class="stats-section">
+            <h2>Monthly Workout Summary</h2>
+            
+            <% if (monthlyStats.length === 0) { %>
+                <div class="empty-state">
+                    <p>No workout data available yet. <a href="/add-workout">Log your first workout!</a></p>
+                </div>
+            <% } else { %>
+                <div class="table-responsive">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Workouts</th>
+                                <th>Total Minutes</th>
+                                <th>Avg Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% monthlyStats.forEach(stat => { %>
+                                <tr>
+                                    <td><strong><%= new Date(stat.month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) %></strong></td>
+                                    <td><%= stat.workout_count %></td>
+                                    <td><%= stat.total_minutes %> min</td>
+                                    <td><%= Math.round(stat.avg_duration) %> min</td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td><strong>Total</strong></td>
+                                <td><strong><%= monthlyStats.reduce((sum, s) => sum + parseInt(s.workout_count), 0) %></strong></td>
+                                <td><strong><%= monthlyStats.reduce((sum, s) => sum + parseInt(s.total_minutes), 0) %> min</strong></td>
+                                <td>-</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Workout Frequency Trend</h3>
+                    <div class="bar-chart">
+                        <% 
+                        const maxWorkouts = Math.max(...monthlyStats.map(s => parseInt(s.workout_count)));
+                        monthlyStats.reverse().forEach(stat => { 
+                            const percentage = (parseInt(stat.workout_count) / maxWorkouts * 100);
+                        %>
+                            <div class="bar-item">
+                                <div class="bar" style="height: <%= percentage %>%">
+                                    <span class="bar-value"><%= stat.workout_count %></span>
+                                </div>
+                                <div class="bar-label">
+                                    <%= new Date(stat.month + '-01').toLocaleDateString('en-US', { month: 'short' }) %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+        </section>
+
+        <section class="stats-section">
+            <h2>Exercise Breakdown</h2>
+            
+            <% if (exerciseStats.length === 0) { %>
+                <div class="empty-state">
+                    <p>No exercise data available yet.</p>
+                </div>
+            <% } else { %>
+                <div class="exercise-stats-grid">
+                    <% exerciseStats.forEach((exercise, index) => { %>
+                        <div class="exercise-stat-card">
+                            <div class="rank-badge">#<%= index + 1 %></div>
+                            <h3><%= exercise.name %></h3>
+                            <span class="badge"><%= exercise.category %></span>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Times Performed:</span>
+                                    <span class="stat-value"><%= exercise.times_performed %></span>
+                                </div>
+                                <% if (exercise.total_calories) { %>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Calories:</span>
+                                        <span class="stat-value"><%= exercise.total_calories %></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <div class="insights-section">
+                    <h3>Key Insights</h3>
+                    <ul class="insights-list">
+                        <li>
+                            <strong>Most Frequent Exercise:</strong> You've performed <%= exerciseStats[0].name %> 
+                            <%= exerciseStats[0].times_performed %> times
+                        </li>
+                        <li>
+                            <strong>Exercise Variety:</strong> You've performed <%= exerciseStats.length %> different exercises
+                        </li>
+                        <% 
+                        const totalCaloriesFromExercises = exerciseStats.reduce((sum, ex) => sum + (parseInt(ex.total_calories) || 0), 0);
+                        if (totalCaloriesFromExercises > 0) { %>
+                            <li>
+                                <strong>Total Calories Burned:</strong> <%= totalCaloriesFromExercises %> calories 
+                                from recorded exercises
+                            </li>
+                        <% } %>
+                    </ul>
+                </div>
+            <% } %>
+        </section>
+    </div>
+</div>
+
+<%- include('footer') %>

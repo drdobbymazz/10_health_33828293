@@ -1,0 +1,27 @@
+{
+  "name": "fittrack-pro",
+  "version": "1.0.0",
+  "description": "A fitness tracking application for logging workouts and monitoring progress",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fitness",
+    "health",
+    "workout",
+    "tracking"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "mysql2": "^3.6.0",
+    "dotenv": "^16.3.1",
+    "express-session": "^1.17.3",
+    "bcrypt": "^5.1.1",
+    "express-validator": "^7.0.1"
+  }
+}

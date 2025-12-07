@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">FitTrack Pro</a>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <% if (user) { %>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/search">Search</a></li>
+                    <li><a href="/add-workout">Add Workout</a></li>
+                    <li><a href="/goals">Goals</a></li>
+                    <li><a href="/statistics">Statistics</a></li>
+                    <li><a href="/logout" class="btn-logout">Logout (<%= user.username %>)</a></li>
+                <% } else { %>
+                    <li><a href="/login" class="btn-primary">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+    <main class="container">
+

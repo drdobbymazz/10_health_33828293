@@ -1,0 +1,77 @@
+<%- include('header') %>
+
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Welcome back, <%= user.full_name || user.username %>!</h1>
+        <p>Here's your fitness overview</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">🏋️</div>
+            <div class="stat-content">
+                <h3><%= stats.total_workouts || 0 %></h3>
+                <p>Total Workouts</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-content">
+                <h3><%= stats.total_minutes || 0 %></h3>
+                <p>Minutes Trained</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-content">
+                <h3><%= stats.total_calories || 0 %></h3>
+                <p>Calories Burned</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-actions">
+        <a href="/add-workout" class="btn btn-primary">Log New Workout</a>
+        <a href="/goals" class="btn btn-secondary">Manage Goals</a>
+        <a href="/statistics" class="btn btn-secondary">View Statistics</a>
+    </div>
+
+    <section class="recent-workouts">
+        <h2>Recent Workouts</h2>
+        
+        <% if (workouts.length === 0) { %>
+            <div class="empty-state">
+                <p>No workouts logged yet. <a href="/add-workout">Add your first workout!</a></p>
+            </div>
+        <% } else { %>
+            <div class="workout-list">
+                <% workouts.forEach(workout => { %>
+                    <div class="workout-card">
+                        <div class="workout-date">
+                            <span class="date-day"><%= new Date(workout.workout_date).getDate() %></span>
+                            <span class="date-month"><%= new Date(workout.workout_date).toLocaleDateString('en-US', { month: 'short' }) %></span>
+                        </div>
+                        <div class="workout-info">
+                            <h3>Workout on <%= new Date(workout.workout_date).toLocaleDateString() %></h3>
+                            <div class="workout-meta">
+                                <span>⏱️ <%= workout.duration_minutes %> minutes</span>
+                                <span>💪 <%= workout.exercise_count %> exercises</span>
+                                <% if (workout.total_calories) { %>
+                                    <span>🔥 <%= workout.total_calories %> cal</span>
+                                <% } %>
+                            </div>
+                            <% if (workout.notes) { %>
+                                <p class="workout-notes"><%= workout.notes %></p>
+                            <% } %>
+                        </div>
+                        <div class="workout-actions">
+                            <a href="/workout/<%= workout.id %>" class="btn btn-small">View Details</a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </section>
+</div>
+
+<%- include('footer') %>
