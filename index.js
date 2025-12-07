@@ -7,6 +7,7 @@ require('dotenv').config();
 
 const app = express();
 const port = 8000;
+const basePath = process.env.BASE_PATH || '';
 
 // database connection
 const db = mysql.createConnection({
@@ -41,9 +42,10 @@ app.use(session({
     cookie: { maxAge: 3600000 } // 1 hour
 }));
 
-// Make user available to all views
+// Make user and basePath available to all views
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
+    res.locals.basePath = basePath;
     next();
 });
 
@@ -52,7 +54,7 @@ const requireLogin = (req, res, next) => {
     if (req.session.user) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect(basePath + '/login');
     }
 };
 
@@ -114,7 +116,7 @@ app.post('/login', async (req, res) => {
                 username: user.username,
                 full_name: user.full_name
             };
-            res.redirect('/dashboard');
+            res.redirect(basePath + '/dashboard');
         } else {
             res.render('login', { title: 'Login', error: 'Invalid username or password' });
         }
@@ -171,8 +173,8 @@ app.post('/register', [
                         formData: req.body 
                     });
                 }
-                
-                res.redirect('/login');
+
+                res.redirect(basePath + '/login');
             }
         );
     } catch (error) {
@@ -188,7 +190,7 @@ app.post('/register', [
 // Logout
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    res.redirect(basePath + '/');
 });
 
 // Dashboard (protected)
@@ -339,13 +341,13 @@ app.post('/add-workout', requireLogin, function(req, res) {
                     if (err) {
                         console.error(err);
                     }
-                    res.redirect('/dashboard');
+                    res.redirect(basePath + '/dashboard');
                 });
             } else {
-                res.redirect('/dashboard');
+                res.redirect(basePath + '/dashboard');
             }
         } else {
-            res.redirect('/dashboard');
+            res.redirect(basePath + '/dashboard');
         }
     });
 });
@@ -412,8 +414,8 @@ app.post('/add-goal', requireLogin, (req, res) => {
             console.error(err);
             return res.status(500).send('Database error');
         }
-        
-        res.redirect('/goals');
+
+        res.redirect(basePath + '/goals');
     });
 });
 
